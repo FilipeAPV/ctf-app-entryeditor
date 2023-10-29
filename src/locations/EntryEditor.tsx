@@ -1,4 +1,5 @@
-import MultiFieldsComponent from "../components/MultiFieldsComponent";
+import MultiFieldsComponent from "./../components/MultiFieldsComponent";
+import HeroImages from "./../components/HeroImages/HeroImages";
 import { Flex, Grid, Paragraph, TextInput } from "@contentful/f36-components";
 import { EditorAppSDK, FieldAppSDK } from "@contentful/app-sdk";
 import { /* useCMA, */ useSDK } from "@contentful/react-apps-toolkit";
@@ -24,15 +25,18 @@ const Entry = () => {
         height: "100vh",
         alignItems: "center",
         justifyContent: "center",
-        marginTop: "50px",
+        marginTop: "100px",
       }}
     >
       <Grid
         style={{ width: "80%" }}
-        columns="1fr 1fr"
+        columns="1fr 1fr 1fr"
         rowGap="spacingM"
         columnGap="spacingM"
       >
+        <div style={{ gridRow: "1 / span 3" }}>
+          <HeroImages />
+        </div>
         {fieldsWithLocales?.map(([key, value]) =>
           // Iterates over all locales per Entry
           value.locales?.map((locale) => (

@@ -1,6 +1,6 @@
 import MultiFieldsComponent from "./../components/MultiFieldsComponent";
 import HeroImages from "./../components/HeroImages/HeroImages";
-import { Flex, Grid, Paragraph, TextInput } from "@contentful/f36-components";
+import { Flex, Grid } from "@contentful/f36-components";
 import { EditorAppSDK, FieldAppSDK } from "@contentful/app-sdk";
 import { /* useCMA, */ useSDK } from "@contentful/react-apps-toolkit";
 import { RichTextEditor } from "@contentful/field-editor-rich-text";
@@ -41,7 +41,6 @@ const Entry = () => {
           // Iterates over all locales per Entry
           value.locales?.map((locale) => (
             <div key={`${value.id}-${locale}`}>
-              <p>{`${value.id} - ${locale}`}</p>
               {MultiFieldsComponent(sdk, sdkField, value, locale)}
             </div>
           ))

@@ -37,11 +37,12 @@ const Entry = () => {
         <div style={{ gridRow: "1 / span 3" }}>
           <HeroImages />
         </div>
+        {/* Iterates over all Fields that have more than one locale */}
         {fieldsWithLocales?.map(([key, value]) =>
-          // Iterates over all locales per Entry
+          // Iterates over all locales per Field
           value.locales?.map((locale) => (
             <div key={`${value.id}-${locale}`}>
-              {MultiFieldsComponent(sdk, sdkField, value, locale)}
+              {MultiFieldsComponent({ sdk, sdkField, value, locale })}
             </div>
           ))
         )}

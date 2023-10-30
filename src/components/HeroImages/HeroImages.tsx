@@ -17,7 +17,7 @@ const HeroImages = ({}) => {
     Promise.all(ids.map((id) => sdk.cma.asset.get({ assetId: id })))
       .then((assets) => setAssetList(assets))
       .catch((error) => console.error("Error fetching assets:", error));
-    console.log(currentImages);
+    //console.log(currentImages);
   }, [sdk.cma.asset, sdk.entry.fields.bigPictures]);
 
   const openAssetPicker = () => {

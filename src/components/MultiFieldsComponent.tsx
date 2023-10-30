@@ -31,7 +31,13 @@ const MultiFieldsComponent = ({
   value,
   locale,
 }: MultiFieldsComponentProps) => {
-  const [state, setState] = useState({});
+  const [state, setState] = useState({
+    field: null,
+    fieldName: "",
+    fieldId: "",
+    fieldDetail: null,
+    fieldValue: "",
+  });
 
   useEffect(() => {
     const fieldDetail = sdk.entry.fields[value.id].getForLocale(locale);
@@ -54,57 +60,60 @@ const MultiFieldsComponent = ({
   };
 
   const countryCode = getCountryCode(locale);
-  if (value.type === "Symbol") {
-    return (
-      <FormControl>
-        <FormControl.Label
-          //isRequired
-          style={{ display: "flex", justifyContent: "space-between" }}
-        >
-          <p>{state.fieldName}</p>
-          <p>
-            {(locale as String).toLocaleUpperCase()}
-            <span
-              className={`fi fi-${countryCode}`}
-              style={{ marginLeft: "5px" }}
-            />
-          </p>
-        </FormControl.Label>
-        <TextInput
-          name={state.fieldId}
-          value={state.fieldValue}
-          title={state.fieldName}
-          onChange={handleOnChange}
-        />
-      </FormControl>
-    );
+  const fieldType = value.type;
+
+  switch (fieldType) {
+    case "Symbol":
+      return (
+        <FormControl>
+          <FormControl.Label
+            //isRequired
+            style={{ display: "flex", justifyContent: "space-between" }}
+          >
+            <p>{state.fieldName}</p>
+            <p>
+              {(locale as String).toLocaleUpperCase()}
+              <span
+                className={`fi fi-${countryCode}`}
+                style={{ marginLeft: "5px" }}
+              />
+            </p>
+          </FormControl.Label>
+          <TextInput
+            name={state.fieldId}
+            value={state.fieldValue}
+            title={state.fieldName}
+            onChange={handleOnChange}
+          />
+        </FormControl>
+      );
+
+    case "RichText":
+      //console.count("RichText Rendering");
+      const modifiedSdk = {
+        ...sdkField,
+        field: {
+          ...state.field,
+          getValue: () => state.fieldDetail?.getValue(),
+          onSchemaErrorsChanged: () => {},
+          onIsDisabledChanged: () => {},
+          onValueChanged: () => {},
+          removeValue: () => state.fieldDetail?.removeValue(),
+          setValue: (newValue) => state.fieldDetail?.setValue(newValue),
+        },
+      };
+
+      if (!state.fieldDetail) return <h1>Loading...</h1>;
+      return (
+        <FormControl>
+          <FormControl.Label isRequired>{state.fieldName}</FormControl.Label>
+          <RichTextEditor sdk={modifiedSdk} isInitiallyDisabled={false} />
+        </FormControl>
+      );
+
+    default:
+      return <h1>No supported fields detected</h1>;
   }
-
-  if (value.type === "RichText") {
-    console.count("RichText Rendering");
-    const modifiedSdk = {
-      ...sdkField,
-      field: {
-        ...state.field,
-        getValue: () => state.fieldDetail?.getValue(),
-        onSchemaErrorsChanged: () => {},
-        onIsDisabledChanged: () => {},
-        onValueChanged: () => {},
-        removeValue: () => state.fieldDetail?.removeValue(),
-        setValue: (newValue) => state.fieldDetail?.setValue(newValue),
-      },
-    };
-
-    if (!state.fieldDetail) return <h1>Loading...</h1>;
-    return (
-      <FormControl>
-        <FormControl.Label isRequired>{state.fieldName}</FormControl.Label>
-        <RichTextEditor sdk={modifiedSdk} isInitiallyDisabled={false} />
-      </FormControl>
-    );
-  }
-
-  return <h1>a</h1>;
 };
 
 export default MultiFieldsComponent;

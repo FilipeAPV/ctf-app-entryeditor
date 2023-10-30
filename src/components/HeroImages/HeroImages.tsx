@@ -18,6 +18,13 @@ const HeroImages = ({}) => {
   const sdk = useSDK<EditorAppSDK>();
   const defaultLocale = sdk.locales.default;
 
+  /* Validation, how to proceed
+  const currentField = sdk.entry.fields.bigPictures;
+  currentField
+    .getForLocale(defaultLocale)
+    .onSchemaErrorsChanged((error) => console.log(error));
+  */
+
   /* 
   This effect runs after the component's initial render and whenever there's a change in the 'bigPictures' field from Contentful or in the assets API call.
   First, it retrieves the current list of images from the 'bigPictures' field.
